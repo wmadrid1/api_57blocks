@@ -75,6 +75,10 @@ namespace API_57Blocks.Services
             if (_context.Users.Any(x => x.Email == model.Email))
                 throw new AppException("Email '" + model.Email + "' is already taken");
 
+            // validate password
+            if (!ValidPassword(model.Password))
+                throw new AppException("Password '" + model.Password + "' is invalid (must contains at least 10 characters, one lowercase letter, one uppercase letter and one of the following characters: !, @, #, ? or ] )");
+
             // map model to new user object
             var user = _mapper.Map<User>(model);
 

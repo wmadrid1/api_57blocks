@@ -39,6 +39,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+// global error handler
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
 app.UseMiddleware<JwtMiddleware>();
 
 app.MapControllers();
