@@ -70,7 +70,7 @@ namespace API_57Blocks.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] SongRequest model)
         {
             try
