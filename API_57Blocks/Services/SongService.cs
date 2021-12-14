@@ -7,8 +7,8 @@ namespace API_57Blocks.Services
 {
     public interface ISongService
     {
-        SongsResponse GetPrivate(int userId);
-        SongsResponse GetPublic();
+        IEnumerable<Song> GetPrivate(int userId, SongsParameters parameters);
+        IEnumerable<Song> GetPublic(SongsParameters parameters);
         Song Create(int userId, SongRequest model);
         Song Update(int userId, int id, SongRequest model);
     }
@@ -26,18 +26,22 @@ namespace API_57Blocks.Services
             _mapper = mapper;
         }
 
-        public SongsResponse GetPrivate(int userId)
+        public IEnumerable<Song> GetPrivate(int userId, SongsParameters parameters)
         {
             var songs = _context.Songs.Where(x => x.UserId == userId);
-            var response = _mapper.Map<SongsResponse>(songs);
-            return response;
+            return songs
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToList();
         }
 
-        public SongsResponse GetPublic()
+        public IEnumerable<Song> GetPublic(SongsParameters parameters)
         {
             var songs = _context.Songs.Where(x => x.scope.Equals("public"));
-            var response = _mapper.Map<SongsResponse>(songs);
-            return response;
+            return songs
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToList();
         }
 
         public Song Create(int userId, SongRequest model)

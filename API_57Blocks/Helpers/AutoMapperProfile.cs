@@ -18,8 +18,6 @@ namespace API_57Blocks.Helpers
             // SongRequest -> Song
             CreateMap<SongRequest, Song>();
 
-            // Song -> SongsResponse
-            CreateMap<Song, SongsResponse>();
         }
     }
 }

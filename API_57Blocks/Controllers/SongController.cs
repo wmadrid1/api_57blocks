@@ -14,23 +14,23 @@ namespace API_57Blocks.Controllers
     public class SongController : ControllerBase
     {
         private ISongService _songService;
-        private HttpContext _context;
+        private HttpContext? _context;
 
-        public SongController(ISongService songService, HttpContext context)
+        public SongController(ISongService songService, IHttpContextAccessor httpContextAccessor)
         {
             _songService = songService;
-            _context = context;
+            _context = httpContextAccessor.HttpContext;
         }
 
         [HttpGet("private")]
-        public IActionResult GetPrivate()
+        public IActionResult GetPrivate([FromQuery] SongsParameters parameters)
         {
             try
             {
-                var user = (User)_context.Items["User"];
+                User user = (User)_context.Items["User"];
                 if (user == null)
                     return Unauthorized();
-                var response = _songService.GetPrivate(user.Id);
+                var response = _songService.GetPrivate(user.Id, parameters);
                 return Ok(response);
             }
             catch (AppException e)
@@ -40,11 +40,11 @@ namespace API_57Blocks.Controllers
         }
 
         [HttpGet("public")]
-        public IActionResult GetPublic()
+        public IActionResult GetPublic([FromQuery] SongsParameters parameters)
         {
             try
             {
-                var response = _songService.GetPublic();
+                var response = _songService.GetPublic(parameters);
                 return Ok(response);
             }
             catch (AppException e)
