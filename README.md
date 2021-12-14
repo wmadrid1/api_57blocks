@@ -195,3 +195,17 @@ Example /Song/public/?PageNumber=1&PageSize=5
         "genre": "Rock"
     }
 ]`
+
+
+## Get random number
+Random number public API URL can be configued in appsettings.json
+
+in key: "RandomAPI_URL": "http://www.randomnumberapi.com/api/v1.0/random"    
+
+**Request**
+
+GET /Random
+
+**Response**
+
+`[20]`
